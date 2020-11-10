@@ -6,7 +6,7 @@
 /*   By: cmilda <cmilda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 16:38:07 by cmilda            #+#    #+#             */
-/*   Updated: 2020/11/09 19:46:32 by cmilda           ###   ########.fr       */
+/*   Updated: 2020/11/10 18:51:12 by cmilda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void		get_map_size(t_filler *game)
 {
-    char	*line;
+	char	*line;
 	int		i;
-	
+
 	i = 0;
 	if (!get_next_line(0, &line))
 		exit(0);
@@ -31,9 +31,9 @@ void		get_map_size(t_filler *game)
 
 void		get_map(t_filler *game)
 {
-	char 	*line;
+	char	*line;
 	int		i;
-	
+
 	i = 0;
 	game->mapa = (char**)malloc(sizeof(char*) * (game->x + 1));
 	get_next_line(0, &line);
@@ -52,8 +52,8 @@ void		get_piece(t_filler *game)
 {
 	char	*line;
 	int		i;
-	int 	size;
-	
+	int		size;
+
 	i = 0;
 	get_next_line(0, &line);
 	while (line[i] && !ft_isdigit(line[i]))

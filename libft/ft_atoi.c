@@ -6,43 +6,33 @@
 /*   By: cmilda <cmilda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 06:25:21 by cmilda            #+#    #+#             */
-/*   Updated: 2020/11/09 19:20:45 by cmilda           ###   ########.fr       */
+/*   Updated: 2020/11/10 18:30:04 by cmilda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/libft.h"
 
-static int	first_ind(char *str)
+int		ft_atoi(const char *str)
 {
-	int i;
-
-	i = 0;
-	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || \
-	str[i] == '\v' || str[i] == '\f' || str[i] == '\r')
-		i++;
-	return (i);
-}
-
-int			ft_atoi(const char *str)
-{
-	int				i;
-	int				sign;
-	long long int	res;
-	long long int	new_res;
+	int		res;
+	int		z;
 
 	res = 0;
-	sign = 1;
-	i = first_ind((char *)str);
-	if (str[i] == '-')
-		sign = -1;
-	if (str[i] == '+' || str[i] == '-')
-		i++;
-	while (str[i] >= '0' && str[i] <= '9')
+	z = 1;
+	while (*str == ' ' || *str == '\t' || *str == '\n' || *str == '\r' ||\
+	*str == '\v' || *str == '\f')
+		str++;
+	if (*str == '+' || *str == '-')
 	{
-		new_res = res * 10 + str[i++] - '0';
-		if (res > new_res)
-			return (sign == -1 ? 0 : -1);
-		res = new_res;
+		if (*str == '-')
+			z = -1;
+		str++;
 	}
-	return ((int)res * sign);
+	while (*str >= '0' && *str <= '9')
+	{
+		res = res * 10;
+		res = res + (int)(*str - '0');
+		str++;
+	}
+	return (res * z);
 }

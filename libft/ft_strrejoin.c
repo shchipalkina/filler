@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memalloc.c                                      :+:      :+:    :+:   */
+/*   ft_strrejoin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmilda <cmilda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/16 20:45:34 by cmilda            #+#    #+#             */
-/*   Updated: 2020/11/10 18:40:15 by cmilda           ###   ########.fr       */
+/*   Created: 2020/11/10 18:34:24 by cmilda            #+#    #+#             */
+/*   Updated: 2020/11/10 18:34:45 by cmilda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/libft.h"
 
-void	*ft_memalloc(size_t size)
+char	*ft_strrejoin(char *s1, char *s2)
 {
-	void	*mem;
+	char	*str;
+	size_t	len;
 
-	if (!(mem = malloc(size)))
+	len = (size_t)(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!(str = ft_strnew(len)))
 		return (NULL);
-	ft_bzero(mem, size);
-	return (mem);
+	str = ft_strcat(str, s1);
+	str = ft_strcat(str, s2);
+	ft_strdel(&s1);
+	return (str);
 }

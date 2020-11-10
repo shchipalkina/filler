@@ -3,22 +3,21 @@ NAME = cmilda.filler
 CC = gcc
 FLAGS = -Wall -Wextra -Werror
 
-SRC_DIR = ./src
+SRC_DIR = ./sources
 INC_DIR = ./includes
 OBJ_DIR = ./obj
 
 LIBFT_INC_DIR = ./filler/libft/includes/
 
-SRC_FILES = $(notdir $(wildcard $(SRC_DIR)*.c))
-OBJ_FILES = $(SRC_FILES:%.c=%.o)
 LIBFT = libft/libft.a
 
 SRC				=	main.c \
-					set_players.c \
 					play.c \
 					make_move.c \
 					free_array.c \
-					get_map_and_piece.c
+					get_map_and_piece.c \
+					set_players.c
+
 SRCS			=	$(addprefix $(SRC_DIR)/, $(SRC))
 OBJ				=	$(SRC:.c=.o)
 OBJS			=	$(addprefix $(OBJ_DIR)/, $(OBJ))

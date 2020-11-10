@@ -6,7 +6,7 @@
 /*   By: cmilda <cmilda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 18:27:43 by cmilda            #+#    #+#             */
-/*   Updated: 2020/11/09 18:38:01 by cmilda           ###   ########.fr       */
+/*   Updated: 2020/11/10 18:48:01 by cmilda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int			is_best_move(int *pos, int oldx, int oldy, int *dir)
 {
-	int	old;
-	int	new;
+	int		old;
+	int		new;
 
 	new = ft_abs(dir[0] - pos[0]) + ft_abs(dir[1] - pos[1]);
 	old = ft_abs(dir[0] - oldx) + ft_abs(dir[1] - oldy);
@@ -24,9 +24,9 @@ int			is_best_move(int *pos, int oldx, int oldy, int *dir)
 
 int			*max_distance(t_filler *game, int mi_x, int mi_y)
 {
-	int	*ret;
-	int x;
-	int y;
+	int		*ret;
+	int		x;
+	int		y;
 
 	x = 0;
 	ret = malloc(sizeof(int) * 2);
@@ -36,7 +36,8 @@ int			*max_distance(t_filler *game, int mi_x, int mi_y)
 		while (game->mapa[x][y])
 		{
 			if (game->mapa[x][y] == '.')
-				if (is_best_move((int[]){x, y}, ret[0], ret[1], (int[]) {mi_x, mi_y}))
+				if (is_best_move((int[]){x, y}, ret[0], ret[1],
+										(int[]) {mi_x, mi_y}))
 				{
 					ret[0] = x;
 					ret[1] = y;
@@ -83,18 +84,18 @@ int			*get_best_direction(t_filler *game, int my_x, int my_y)
 	return (max_distance(game, my_x, my_y));
 }
 
-void        make_move(t_filler *game, t_list *moves)
+void		make_move(t_filler *game, t_list *moves)
 {
-    t_list  *head;
-    int     x;
-    int     y;
-    int     *dir;
+	t_list	*head;
+	int		x;
+	int		y;
+	int		*dir;
 
-    dir = get_best_direction(game, 0, 0);
-    x = ((int *)(moves->content))[0];
-    y = ((int *)(moves->content))[1];
-    head = moves;
-    while (moves)
+	dir = get_best_direction(game, 0, 0);
+	x = ((int *)(moves->content))[0];
+	y = ((int *)(moves->content))[1];
+	head = moves;
+	while (moves)
 	{
 		if (!is_best_move(moves->content, x, y, dir))
 		{

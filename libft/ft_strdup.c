@@ -6,7 +6,7 @@
 /*   By: cmilda <cmilda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 05:19:44 by cmilda            #+#    #+#             */
-/*   Updated: 2020/11/09 19:18:55 by cmilda           ###   ########.fr       */
+/*   Updated: 2020/11/10 18:31:59 by cmilda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 char	*ft_strdup(const char *src)
 {
-	size_t	i;
-	size_t	len;
+	char	*rez;
+	int		l;
 	char	*str;
 
-	len = 0;
-	i = 0;
-	while (src[len])
-		len++;
-	if (!(str = (char *)malloc(sizeof(char) * (len + 1))))
+	str = (char *)src;
+	l = ft_strlen(src);
+	if (!(rez = (char *)malloc(sizeof(char) * l + 1)))
 		return (NULL);
-	while (i < len)
+	while (*str)
 	{
-		str[i] = src[i];
-		i++;
+		*rez = *str;
+		rez++;
+		str++;
 	}
-	str[i] = '\0';
-	return (str);
+	*rez = '\0';
+	rez = rez - l;
+	return (rez);
 }

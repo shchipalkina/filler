@@ -6,65 +6,91 @@
 /*   By: cmilda <cmilda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 20:06:26 by cmilda            #+#    #+#             */
-/*   Updated: 2020/11/09 19:20:20 by cmilda           ###   ########.fr       */
+/*   Updated: 2020/11/10 18:29:28 by cmilda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/libft.h"
 
-static int	ft_strline(char **str, char **line)
+static t_list	*ft_lsttnew(size_t content_size)
 {
-	size_t	len;
-	char	*tmp;
+	t_list	*list;
 
-	len = 0;
-	while ((*str)[len] != '\n' && (*str)[len])
-		len++;
-	if ((*str)[len] == '\n')
+	if (!(list = (t_list *)ft_memalloc(sizeof(t_list))))
 	{
-		if (!(*line = ft_strsub(*str, 0, len)))
-			return (-1);
-		if (!(tmp = ft_strdup(*str + len + 1)))
-			return (-1);
-		free(*str);
-		*str = tmp;
-		if ((*str)[0] == '\0')
-			ft_strdel(str);
+		free(list);
+		return (NULL);
 	}
-	else
+	if (!(list->content = (void *)ft_memalloc(content_size)))
 	{
-		if (!(*line = ft_strdup(*str)))
-			return (-1);
-		ft_strdel(str);
+		free(list->content);
+		return (NULL);
 	}
-	return (1);
+	list->content_size = content_size;
+	list->next = NULL;
+	return (list);
 }
 
-int			get_next_line(const int fd, char **line)
+static int		gnl(char **line, t_list *tmp)
 {
-	static char		*stch[MAX_FD];
-	char			bfsz[BUFF_SIZE + 1];
-	char			*tmp;
-	ssize_t			ret;
+	char		*qwe;
+	char		*tmpbuf;
 
-	if (fd < 0 || !line)
-		return (-1);
-	while ((ret = read(fd, bfsz, BUFF_SIZE)) > 0)
+	tmpbuf = tmp->content;
+	qwe = ft_strchr(tmp->content, 10);
+	if (qwe)
 	{
-		if (!(bfsz[ret] = '\0') && stch[fd] == NULL)
-			stch[fd] = ft_strdup(bfsz);
-		else
-		{
-			tmp = ft_strjoin(stch[fd], bfsz);
-			stch[fd] ? free(stch[fd]) : 0;
-			stch[fd] = tmp;
-		}
-		if (stch[fd] == NULL)
-			return (-1);
-		if (ft_strchr(stch[fd], '\n'))
-			break ;
+		qwe[0] = '\0';
+		*line = ft_strdup(tmp->content);
+		tmp->content = ft_strdup(&qwe[1]);
+		free(tmpbuf);
+		return (1);
 	}
-	if (ret < 0 || stch[fd] == NULL)
-		return (ret < 0 ? -1 : 0);
-	return (ft_strline(&stch[fd], line));
+	else if (ft_strlen(tmp->content) > 0)
+	{
+		*line = ft_strdup(tmp->content);
+		free(tmpbuf);
+		tmp->content = ft_strnew(0);
+		return (1);
+	}
+	return (0);
+}
+
+static int		ggnl(const int fd, char **line, t_list *tmp)
+{
+	int				r;
+	char			str[BUFF_SIZE + 1];
+
+	while (!(ft_strchr(tmp->content, 10)))
+	{
+		if ((r = read(fd, str, BUFF_SIZE)) == -1)
+			return (-1);
+		str[r] = '\0';
+		if (r == 0)
+			break ;
+		tmp->content = ft_strrejoin(tmp->content, str);
+	}
+	return (gnl(line, tmp));
+}
+
+int				get_next_line(const int fd, char **line)
+{
+	static t_list	*sl;
+	t_list			*tmp;
+
+	if (!line || fd < 0 || (read(fd, NULL, 0) < 0))
+		return (-1);
+	if (!(sl))
+		sl = ft_lsttnew((size_t)fd);
+	tmp = sl;
+	if (tmp->content_size != (size_t)fd)
+		while (!(tmp->content_size == (size_t)fd) || (tmp->next))
+			if (!(tmp = tmp->next) || tmp->content_size == (size_t)fd)
+				break ;
+	if (!tmp)
+	{
+		tmp = ft_lsttnew((size_t)fd);
+		ft_lstadd(&sl, tmp);
+	}
+	return (ggnl(fd, line, tmp));
 }

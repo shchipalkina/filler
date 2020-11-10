@@ -6,13 +6,13 @@
 /*   By: cmilda <cmilda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 20:31:58 by cmilda            #+#    #+#             */
-/*   Updated: 2020/11/09 18:42:04 by cmilda           ###   ########.fr       */
+/*   Updated: 2020/11/10 18:49:57 by cmilda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-int		check(t_filler *game, int x, int y, int *placed)
+int			check(t_filler *game, int x, int y, int *placed)
 {
 	if (x < 0 || y < 0 || x >= game->x || y >= game->y)
 		return (0);
@@ -28,7 +28,7 @@ int		check(t_filler *game, int x, int y, int *placed)
 	return (1);
 }
 
-int		place_piece(t_filler *game, int top_x, int top_y)
+int			place_piece(t_filler *game, int top_x, int top_y)
 {
 	int		placed;
 	int		x;
@@ -54,11 +54,11 @@ int		place_piece(t_filler *game, int top_x, int top_y)
 	return (1);
 }
 
-int		*is_valid_move(t_filler *game, int i, int j)
+int			*is_valid_move(t_filler *game, int i, int j)
 {
-	int	*ret;
-	int x;
-	int y;
+	int		*ret;
+	int		x;
+	int		y;
 
 	ret = malloc(sizeof(int) * 2);
 	x = 0;
@@ -81,7 +81,7 @@ int		*is_valid_move(t_filler *game, int i, int j)
 	return (NULL);
 }
 
-t_list	*get_legal_moves(t_filler *game)
+t_list		*get_legal_moves(t_filler *game)
 {
 	t_list	*moves;
 	int		x;
@@ -110,15 +110,15 @@ t_list	*get_legal_moves(t_filler *game)
 
 int			play(t_filler *game)
 {
-    t_list	*moves;
-	
+	t_list	*moves;
+
 	get(game);
-    moves = get_legal_moves(game);
-    if (!moves)
-    {
-        write(1, "0 0 \n", 4);
-        exit (1);
-    }
+	moves = get_legal_moves(game);
+	if (!moves)
+	{
+		write(1, "0 0\n", 4);
+		exit(1);
+	}
 	make_move(game, moves);
 	free_array(&(game->mapa));
 	free_array(&(game->piece));
